@@ -24,6 +24,27 @@ export default defineStore('productStore',{
             this.getProductList()
             this.isLoading = false
           })
+      },
+      async addProduct(addProductList) {
+        // 新增
+        let api = `${import.meta.env.VITE_APP_API}api/${import.meta.env.VITE_APP_PATH}/admin/product`
+        let apiMethods = 'post'
+        
+        // 編輯
+        if(addProductList.isNew === false) {
+          api = `${import.meta.env.VITE_APP_API}api/${import.meta.env.VITE_APP_PATH}/admin/product/${addProductList.id}`
+          apiMethods = 'put'
+        } 
+        this.isLoading = true
+        await axios[apiMethods](api, { data: addProductList})
+          .then((res) => {
+            if(res.data.success){
+              this.getProductList()
+            } else {
+              console.log(res.data.message)
+            }
+          })
+          this.isLoading = false
       }
     }
 })

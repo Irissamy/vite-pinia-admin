@@ -1,7 +1,6 @@
 <template>
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" ref="modal">
-      <!-- 請同學自行新增 v-model -->
       <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content border-0">
           <div class="modal-header bg-dark text-white">
@@ -24,21 +23,47 @@
                     <i class="fas fa-spinner fa-spin"></i>
                   </label>
                   <input type="file" id="customFile" class="form-control" ref="fileInput">
-                </div>
-                <img class="img-fluid" alt="" src="">
-                <!-- 延伸技巧，多圖 -->
-                <div class="mt-5">
-                  <div class="mb-3 input-group" >
-                    <input type="url" class="form-control form-control"
-                            placeholder="請輸入連結">
-                    <button type="button" class="btn btn-outline-danger">
-                      移除
-                    </button>
-                  </div>
-                  <div>
-                    <button class="btn btn-outline-primary btn-sm d-block w-100">
+                  <div class="mt-3">
+                    <button class="btn btn-outline-primary btn-md d-block w-100" @click.prevent="updateImgFile">
                       新增圖片
                     </button>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <div class="d-flex">
+                    <p class="fw-bolder mb-2">主要圖片</p>
+                    <a href="javascript:void(0)" class="d-block ms-auto">
+                      <i class="bi bi-trash"></i>
+                    </a>
+                  </div>
+                  <input type="text" id="image-url" class="form-control" v-model="addProductList.imageUrl">
+                  <img class="img-fluid mt-3 main-img" alt="" :src="addProductList.imageUrl">
+                </div>
+                <div class="row">
+                  <p class="fw-bolder mb-2">次要圖片</p>
+                  <div class="col-md-6">
+                    <div class="form-check d-flex">
+                      <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                      <label class="form-check-label ps-1" for="flexCheckDefault">
+                        選為主要
+                      </label>
+                      <a href="javascript:void(0)" class="d-block ms-auto">
+                        <i class="bi bi-trash"></i>
+                      </a>
+                    </div>
+                    <img src="https://images.unsplash.com/photo-1516627145497-ae6968895b74?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=1924&amp;q=80" alt="圖片1" class="img-fluid card-img">
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-check d-flex">
+                      <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                      <label class="form-check-label ps-1" for="flexCheckDefault">
+                        選為主要
+                      </label>
+                      <a href="javascript:void(0)" class="d-block ms-auto">
+                        <i class="bi bi-trash"></i>
+                      </a>
+                    </div>
+                    <img src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=1950&amp;q=80" alt="圖片2" class="img-fluid card-img">
                   </div>
                 </div>
               </div>
@@ -105,7 +130,7 @@
             <button type="button" class="btn btn-outline-secondary"
                     data-bs-dismiss="modal">取消
             </button>
-            <button type="button" class="btn btn-primary">確認</button>
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click.prevent="addProduct(addProductList)">確認</button>
           </div>
         </div>
       </div>
@@ -114,6 +139,9 @@
 
 <script>
 import modalMixins from '@/mixins/modalMixins'
+import axios from 'axios'
+import productStore from '@/store/productStore.js'
+import { mapActions } from 'pinia'
 
 export default {
   props: {
@@ -135,7 +163,29 @@ export default {
   },
   mixins: [modalMixins],
   methods: {
-    
+    ...mapActions(productStore,['addProduct']),
+    updateImgFile () {
+      const uploadedFile = this.$refs.fileInput.files[0]
+      const formData = new FormData()
+      formData.append('file-to-upload', uploadedFile)
+      const url = `${import.meta.env.VITE_APP_API}api/${import.meta.env.VITE_APP_PATH}/admin/upload`
+      axios.post(url, formData)
+        .then((res) => {
+          if (res.data.success) {
+            this.addProductList.imageUrl = res.data.imageUrl
+          }
+        })
+      this.$refs.fileInput.value = ''
+    }
   }
 }
 </script>
+
+<style scoped>
+.main-img {
+  object-fit: cover;
+}.card-img {
+  object-fit: cover;
+  height: 100px;
+}
+</style>

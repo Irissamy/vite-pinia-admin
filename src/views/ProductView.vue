@@ -67,10 +67,11 @@ export default {
         openModal(isNew,item) {
             if(isNew){
                 this.currentProduct = {
-                    is_enabled: 0
+                    is_enabled: 0,
+                    isNew: true
                 }
             } else {
-                this.currentProduct = { ...item }
+                this.currentProduct = { ...item,isNew:false }
             }
             this.isNew = isNew
             this.$refs.productDatail.showModal()
