@@ -56,7 +56,9 @@ export default {
         return {
             currency,
             isNew: false,
-            currentProduct: {},
+            currentProduct: {
+                imagesUrl: []
+            },
         }
     },
     computed: {
@@ -68,10 +70,12 @@ export default {
             if(isNew){
                 this.currentProduct = {
                     is_enabled: 0,
+                    imagesUrl: [],
                     isNew: true
                 }
             } else {
-                this.currentProduct = { ...item,isNew:false }
+                this.currentProduct = { ...item }
+                this.currentProduct.isNew = false
             }
             this.isNew = isNew
             this.$refs.productDatail.showModal()

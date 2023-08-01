@@ -15,7 +15,7 @@
               <div class="col-sm-4">
                 <div class="mb-3">
                   <label for="image" class="form-label">輸入圖片網址</label>
-                  <input type="text" class="form-control" id="image"
+                  <input type="text" class="form-control" id="image" ref="imageInput"
                           placeholder="請輸入圖片連結">
                 </div>
                 <div class="mb-3">
@@ -32,38 +32,26 @@
                 <div class="mb-3">
                   <div class="d-flex">
                     <p class="fw-bolder mb-2">主要圖片</p>
-                    <a href="javascript:void(0)" class="d-block ms-auto">
+                    <a href="javascript:void(0)" class="d-block ms-auto" @click.prevent="delImages(-1)">
                       <i class="bi bi-trash"></i>
                     </a>
                   </div>
                   <input type="text" id="image-url" class="form-control" v-model="addProductList.imageUrl">
                   <img class="img-fluid mt-3 main-img" alt="" :src="addProductList.imageUrl">
                 </div>
-                <div class="row">
+                <div class="row" v-if="addProductList.imagesUrl">
                   <p class="fw-bolder mb-2">次要圖片</p>
-                  <div class="col-md-6">
+                  <div class="col-md-6 mb-2" v-for="(item,index) in addProductList.imagesUrl" :key="index">
                     <div class="form-check d-flex">
                       <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
                       <label class="form-check-label ps-1" for="flexCheckDefault">
                         選為主要
                       </label>
-                      <a href="javascript:void(0)" class="d-block ms-auto">
+                      <a href="javascript:void(0)" class="d-block ms-auto" @click.prevent="delImages(index)">
                         <i class="bi bi-trash"></i>
                       </a>
                     </div>
-                    <img src="https://images.unsplash.com/photo-1516627145497-ae6968895b74?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=1924&amp;q=80" alt="圖片1" class="img-fluid card-img">
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-check d-flex">
-                      <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                      <label class="form-check-label ps-1" for="flexCheckDefault">
-                        選為主要
-                      </label>
-                      <a href="javascript:void(0)" class="d-block ms-auto">
-                        <i class="bi bi-trash"></i>
-                      </a>
-                    </div>
-                    <img src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=1950&amp;q=80" alt="圖片2" class="img-fluid card-img">
+                    <img :src="item" alt="圖片1" class="img-fluid card-img">
                   </div>
                 </div>
               </div>
@@ -153,12 +141,14 @@ export default {
   data () {
     return {
       modal: {},
-      addProductList: {}
+      addProductList: {
+        imagesUrl: []
+      }
     }
   },
   watch: {
     product() {
-        this.addProductList = this.product
+        this.addProductList = {...this.product, imagesUrl:this.product.imagesUrl || []}
     }
   },
   mixins: [modalMixins],
@@ -168,14 +158,40 @@ export default {
       const uploadedFile = this.$refs.fileInput.files[0]
       const formData = new FormData()
       formData.append('file-to-upload', uploadedFile)
-      const url = `${import.meta.env.VITE_APP_API}api/${import.meta.env.VITE_APP_PATH}/admin/upload`
-      axios.post(url, formData)
-        .then((res) => {
-          if (res.data.success) {
-            this.addProductList.imageUrl = res.data.imageUrl
-          }
-        })
+      const url = `${import.meta.env.VITE_APP_API}api/${import.meta.env.VITE_APP_PATH}/admin/upload` 
+      if(this.$refs.imageInput.value){
+        if(!this.addProductList.imageUrl){
+          this.addProductList.imageUrl = this.$refs.imageInput.value
+        } else {
+          this.addProductList.imagesUrl.push(this.$refs.imageInput.value)
+        }
+      } else {
+        if(!this.addProductList.imageUrl){
+          axios.post(url, formData)
+            .then((res) => {
+              if (res.data.success) {
+                this.addProductList.imageUrl = res.data.imageUrl
+              }
+          })
+        } else {
+          axios.post(url, formData)
+            .then((res) => {
+              if (res.data.success) {
+                this.addProductList.imagesUrl.push(res.data.imageUrl)
+              }
+          })
+        }
+      }
+      this.$refs.imageInput.value = ''
       this.$refs.fileInput.value = ''
+    },
+    delImages(index) {
+      if(index === -1) {
+        this.addProductList.imageUrl = ''
+      } else {
+        this.addProductList.imagesUrl.splice(index,1)
+      }
+      
     }
   }
 }
