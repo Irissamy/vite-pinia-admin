@@ -42,11 +42,11 @@
                 <div class="row" v-if="addProductList.imagesUrl">
                   <p class="fw-bolder mb-2">次要圖片</p>
                   <div class="col-md-6 mb-2" v-for="(item,index) in addProductList.imagesUrl" :key="index">
-                    <div class="form-check d-flex">
-                      <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                      <label class="form-check-label ps-1" for="flexCheckDefault">
-                        選為主要
-                      </label>
+                    <div class="form-check d-flex ps-0">
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="inlineRadioOptions" :id="`inlineRadio${index}`" :value="item" v-model="mainImgChecked" @change="selectToMain(index)">
+                        <label class="form-check-label" for="inlineRadio1">選為主要</label>
+                      </div>
                       <a href="javascript:void(0)" class="d-block ms-auto" @click.prevent="delImages(index)">
                         <i class="bi bi-trash"></i>
                       </a>
@@ -143,7 +143,8 @@ export default {
       modal: {},
       addProductList: {
         imagesUrl: []
-      }
+      },
+      mainImgChecked:''
     }
   },
   watch: {
@@ -191,7 +192,11 @@ export default {
       } else {
         this.addProductList.imagesUrl.splice(index,1)
       }
-      
+    },
+    selectToMain(index){
+      this.addProductList.imagesUrl[index] = this.addProductList.imageUrl
+      this.addProductList.imageUrl = this.mainImgChecked
+      this.mainImgChecked = ''
     }
   }
 }
