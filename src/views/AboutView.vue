@@ -32,13 +32,11 @@ export default {
   },
   methods: {
     getUser(){
-      console.log(import.meta.env.VITE_TEXT)
       const api = import.meta.env.VITE_PATH
       this.$http.get(api)
         .then((res) => {
           if(res.data.results){
             this.user = res.data.results[0]
-            console.log(res.data)
           } 
         })
     }

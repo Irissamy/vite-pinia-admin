@@ -39,10 +39,8 @@ export default {
         logout () {
             const api = `${import.meta.env.VITE_APP_API}logout`
             this.$http.post(api, this.user)
-                .then((res) => {
-                console.log(res)
-                this.isLogin = false
-                this.$router.push('/login')
+                .then(() => {
+                    this.$router.push('/login')
                 })
     }
     }
