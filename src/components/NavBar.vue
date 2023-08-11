@@ -16,6 +16,9 @@
                     <li class="nav-item">
                         <RouterLink to="/product" class="nav-link">Product</RouterLink>
                     </li>
+                    <li class="nav-item">
+                        <RouterLink to="/order" class="nav-link">Order</RouterLink>
+                    </li>
                 </ul>
                 <div class="nav-item dropdown pe-3">
                     <RouterLink to="/login" class="btn btn-outline-success me-2">登入</RouterLink>
