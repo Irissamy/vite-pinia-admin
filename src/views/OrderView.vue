@@ -1,4 +1,5 @@
 <template>
+  <LoadingOverlay :active="isLoading"></LoadingOverlay>
     <table class="table mt-4">
     <thead>
     <tr>
@@ -18,11 +19,11 @@
           <ul class="list-unstyled">
             <li v-for="el in item.products" :key="el.id">
               {{ el.product.title }}
-             / 數量：{{ el.product.num }}
+             / 數量：{{ el.qty }}
             </li>
           </ul>
         </td>
-        <td class="text-right">{{ item.total }}</td>
+        <td class="text-right">{{ currency(item.total) }}</td>
         <td>
           <div class="form-check form-switch">
             <input class="form-check-input" type="checkbox" v-model="item.is_paid" @change="changeOrder(item.id)">
@@ -44,10 +45,13 @@
 </template>
 
 <script>
+import { currency } from '@/methods/filterFn.js'
 
 export default {
   data () {
     return {
+      currency,
+      isLoading: false,
       orderList: [],
       pagination: {}
     }
@@ -55,10 +59,12 @@ export default {
   methods: {
     getOrderList (page = 1) {
       const api = `${import.meta.env.VITE_APP_API}api/${import.meta.env.VITE_APP_PATH}/admin/orders/?page=${page}`
+      this.isLoading = true
       this.$http.get(api)
         .then((res) => {
           if (res.data.success) {
             this.orderList = res.data.orders
+            this.isLoading = false
           } else {
             console.log(res.data.messages)
           }

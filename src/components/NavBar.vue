@@ -17,6 +17,9 @@
                         <RouterLink to="/product" class="nav-link">Product</RouterLink>
                     </li>
                     <li class="nav-item">
+                        <RouterLink to="/coupon" class="nav-link">Coupon</RouterLink>
+                    </li>
+                    <li class="nav-item">
                         <RouterLink to="/order" class="nav-link">Order</RouterLink>
                     </li>
                 </ul>
