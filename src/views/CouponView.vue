@@ -24,39 +24,54 @@
                 </td>
                 <td>
                     <div class="btn-group">
-                        <button class="btn btn-outline-primary btn-sm" @click.prevent="editCoupon(item,false)">編輯</button>
+                        <button class="btn btn-outline-primary btn-sm" @click.prevent="openModal(false,item)">編輯</button>
                         <button class="btn btn-outline-danger btn-sm">刪除</button>
                     </div>
                 </td>
             </tr>
         </tbody>
     </table>
+    <CouponModal ref="CouponModal" :coupon="currentCoupon"></CouponModal>
 </template>
 
 <script>
 import { currency,date } from '@/methods/filterFn.js'
+import CouponModal from '@/components/modal/CouponModal.vue'
+import couponStore from '@/store/couponStore.js'
+import { mapActions, mapState } from 'pinia'
 
 export default {
+    components: {
+        CouponModal
+    },
     data() {
         return {
             currency,
             date,
             isLoading: false,
-            couponList: {},
+            isNew: false,
+            currentCoupon: {}
         }
     },
     computed: {
-        
+        ...mapState(couponStore,['couponList'])
     },
     methods: {
-        getCoupon(page = 1) {
-            const api = `${import.meta.env.VITE_APP_API}api/${import.meta.env.VITE_APP_PATH}/admin/coupons/?page=${page}`
-            this.isLoading = true
-            this.$http.get(api)
-                .then((res) => {
-                    this.couponList = res.data.coupons
-                    this.isLoading = false
-                })
+        ...mapActions(couponStore,['getCoupon']),
+        openModal(isNew,item){
+            if(isNew) {
+                this.isNew = isNew
+                this.currentCoupon = {
+                    is_enabled: 0, // 瀏覽器預設checkbox value，所以這邊先預設value避免空值
+                    percent: 100,
+                    due_date: new Date().getTime() / 1000,
+                    isNew: this.isNew
+                }
+            } else {
+                this.isNew = false
+                this.currentCoupon = { ...item,isNew: this.isNew }
+            }
+            this.$refs.CouponModal.showModal()
         }
     },
     created() {
