@@ -25,7 +25,7 @@
                 <td>
                     <div class="btn-group">
                         <button class="btn btn-outline-primary btn-sm" @click.prevent="openModal(false,item)">編輯</button>
-                        <button class="btn btn-outline-danger btn-sm">刪除</button>
+                        <button class="btn btn-outline-danger btn-sm" @click.prevent="deleteCoupon(item.id)">刪除</button>
                     </div>
                 </td>
             </tr>
@@ -48,16 +48,15 @@ export default {
         return {
             currency,
             date,
-            isLoading: false,
             isNew: false,
             currentCoupon: {}
         }
     },
     computed: {
-        ...mapState(couponStore,['couponList'])
+        ...mapState(couponStore,['couponList','isLoading'])
     },
     methods: {
-        ...mapActions(couponStore,['getCoupon']),
+        ...mapActions(couponStore,['getCoupon','deleteCoupon']),
         openModal(isNew,item){
             if(isNew) {
                 this.isNew = isNew
