@@ -1,1 +1,0 @@
-function c(e){return`${parseInt(e,10).toFixed(0).replace(/./g,(t,n,r)=>n&&t!=="."&&(r.length-n)%3===0?`, ${t}`.replace(/\s/g,""):t)}`}function o(e){return new Date(e*1e3).toLocaleDateString()}export{c,o as d};
