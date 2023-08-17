@@ -18,19 +18,19 @@
                   <tbody>
                     <tr>
                       <th style="width: 100px;">姓名</th>
-                      <td>name</td>
+                      <td>{{ currentOrder.user.name }}</td>
                     </tr>
                     <tr>
                       <th>Email</th>
-                      <td>email</td>
+                      <td>{{ currentOrder.user.email }}</td>
                     </tr>
                     <tr>
                       <th>電話</th>
-                      <td>tel</td>
+                      <td>{{ currentOrder.user.tel }}</td>
                     </tr>
                     <tr>
                       <th>地址</th>
-                      <td>address</td>
+                      <td>{{ currentOrder.user.address }}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -41,11 +41,11 @@
                   <tbody>
                     <tr>
                       <th style="width: 100px">訂單編號</th>
-                      <td>id</td>
+                      <td>{{ currentOrder.id }}</td>
                     </tr>
                     <tr>
                       <th>下單時間</th>
-                      <td>create_at</td>
+                      <td>{{ $dayjs(new Date(currentOrder.create_at * 1000)).format('YYYY-MM-DD') }}</td>
                     </tr>
                     <tr>
                       <th>付款時間</th>
@@ -59,14 +59,14 @@
                     <tr>
                       <th>付款狀態</th>
                       <td>
-                        <strong  class="text-success">已付款</strong>
-                        <span class="text-muted">尚未付款</span>
+                        <strong v-if="isPaid" class="text-success">已付款</strong>
+                        <span v-else class="text-muted">尚未付款</span>
                       </td>
                     </tr>
                     <tr>
                       <th>總金額</th>
                       <td>
-                        $500
+                        ${{ currency(currentOrder.total) }}
                       </td>
                     </tr>
                   </tbody>
@@ -74,19 +74,18 @@
                 <h3>選購商品</h3>
                 <table class="table">
                   <thead>
-                    <tr>
-                    </tr>
+                    <tr></tr>
                   </thead>
                   <tbody>
-                    <tr>
+                    <tr v-for="item in currentOrder.products" :key="item.id">
                       <th>
-                        title
+                        {{ item.product.title }}
                       </th>
                       <td>
-                        1 / 個
+                        {{ item.qty }} / {{ item.product.unit }}
                       </td>
                       <td class="text-end">
-                        $500
+                        ${{ currency(item.final_total) }}
                       </td>
                     </tr>
                   </tbody>
@@ -98,7 +97,7 @@
             <button type="button" class="btn btn-outline-secondary"
                     data-bs-dismiss="modal">取消
             </button>
-            <button type="button" class="btn btn-primary">確認</button>
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">確認</button>
           </div>
         </div>
       </div>
@@ -107,6 +106,7 @@
 
 <script>
 import modalMixin from '@/mixins/modalMixins.js'
+import { currency } from '@/methods/filterFn.js'
 
 export default {
     name: 'orderModal',
@@ -118,12 +118,19 @@ export default {
     },
     data() {
         return {
-            
+            currency,
+            currentOrder: {
+                user:{}
+            },
+            isPaid: false
         };
     },
     mixins: [modalMixin],
     watch: {
-        
+        order() {
+            this.currentOrder = this.order
+            this.isPaid = this.currentOrder.is_paid
+        }
     }
 }
 </script>

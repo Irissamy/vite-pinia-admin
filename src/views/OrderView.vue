@@ -23,7 +23,7 @@
             </li>
           </ul>
         </td>
-        <td class="text-right">{{ currency(item.total) }}</td>
+        <td class="text-right">${{ currency(item.total) }}</td>
         <td>
           <div class="form-check form-switch">
             <input class="form-check-input" type="checkbox" v-model="item.is_paid" @change="changeOrder(item.id)">
@@ -35,14 +35,14 @@
         </td>
         <td>
           <div class="btn-group">
-            <button class="btn btn-outline-primary btn-sm" @click="openOrder()">檢視</button>
+            <button class="btn btn-outline-primary btn-sm" @click="openOrder(item)">檢視</button>
             <button class="btn btn-outline-danger btn-sm" @click="openDelete(item)">刪除</button>
           </div>
         </td>
       </tr>
     </tbody>
   </table>
-  <OrderModal ref="orderModal" ></OrderModal>
+  <OrderModal ref="orderModal" :order="currentList"></OrderModal>
   <DeleteModal ref="deleteModal" :delete-item="currentList" @del-item="deleteOrder(currentList.id)"></DeleteModal>
 </template>
 
@@ -68,7 +68,8 @@ export default {
   },
   methods: {
     ...mapActions(orderStore,['getOrderList','deleteOrder','changeOrder']),
-    openOrder(){
+    openOrder(item){
+      this.currentList = { ...item }
       this.$refs.orderModal.showModal()
     },
     openDelete(item) {
