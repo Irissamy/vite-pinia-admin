@@ -55,7 +55,7 @@ export default {
           this.user.username = ''
           this.user.password = ''
           if (res.data.success) {
-            this.$router.push('/product')
+            this.$router.push('/')
           } else {
             alert(res.data.message)
           }

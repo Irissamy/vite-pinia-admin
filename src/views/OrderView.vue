@@ -12,14 +12,14 @@
     </tr>
     </thead>
     <tbody>
-      <tr v-for="item in orderList" :key="item.id">
-        <td>{{ item.create_at }}</td>
+      <tr v-for="item in orderList" :key="item.id" :class="{'text-secondary': !item.is_paid}">
+        <td>{{ $dayjs(item.create_at * 1000).format('YYYY-MM-DD') }}</td>
         <td>{{ item.user.email }}</td>
         <td>
           <ul class="list-unstyled">
             <li v-for="el in item.products" :key="el.id">
               {{ el.product.title }}
-             / 數量：{{ el.qty }}
+             / 數量：{{ el.qty }}{{ el.product.unit }}
             </li>
           </ul>
         </td>
@@ -35,64 +35,45 @@
         </td>
         <td>
           <div class="btn-group">
-            <button class="btn btn-outline-primary btn-sm">檢視</button>
-            <button class="btn btn-outline-danger btn-sm" @click.prevent="deleteOrder(item.id)">刪除</button>
+            <button class="btn btn-outline-primary btn-sm" @click="openOrder()">檢視</button>
+            <button class="btn btn-outline-danger btn-sm" @click="openDelete(item)">刪除</button>
           </div>
         </td>
       </tr>
     </tbody>
   </table>
+  <OrderModal ref="orderModal" ></OrderModal>
+  <DeleteModal ref="deleteModal" :delete-item="currentList" @del-item="deleteOrder(currentList.id)"></DeleteModal>
 </template>
 
 <script>
 import { currency } from '@/methods/filterFn.js'
+import OrderModal from '@/components/modal/OrderModal.vue'
+import DeleteModal from '@/components/modal/DeleteModal.vue'
+import orderStore from '@/store/orderStore.js'
+import { mapState, mapActions } from 'pinia'
 
 export default {
+  components: {
+    OrderModal,DeleteModal
+  },
   data () {
     return {
       currency,
-      isLoading: false,
-      orderList: [],
-      pagination: {}
+      currentList: {}
     }
   },
+  computed: {
+    ...mapState(orderStore,['orderList','isLoading'])
+  },
   methods: {
-    getOrderList (page = 1) {
-      const api = `${import.meta.env.VITE_APP_API}api/${import.meta.env.VITE_APP_PATH}/admin/orders/?page=${page}`
-      this.isLoading = true
-      this.$http.get(api)
-        .then((res) => {
-          if (res.data.success) {
-            this.orderList = res.data.orders
-            this.isLoading = false
-          } else {
-            console.log(res.data.messages)
-          }
-        })
+    ...mapActions(orderStore,['getOrderList','deleteOrder','changeOrder']),
+    openOrder(){
+      this.$refs.orderModal.showModal()
     },
-    deleteOrder(orderId){
-        const api = `${import.meta.env.VITE_APP_API}api/${import.meta.env.VITE_APP_PATH}/admin/order/${orderId}`
-        this.$http.delete(api)
-            .then((res) => {
-                if(res.data.success){
-                    this.getOrderList()
-                } else {
-                    console.log(res.data.message)
-                }
-            })
-    },
-    changeOrder(orderId){
-        const api = `${import.meta.env.VITE_APP_API}api/${import.meta.env.VITE_APP_PATH}/admin/order/${orderId}`
-        const params = this.orderList.find((item) => item.id === orderId)
-        // console.log(params)
-        this.$http.put(api,{data:params})
-            .then((res) => {
-                if(res.data.success){
-                    this.getOrderList()
-                } else {
-                    console.log(res.data.message)
-                }
-            })
+    openDelete(item) {
+      this.currentList = { ...item }
+      this.$refs.deleteModal.showModal()
     }
   },
   created () {
