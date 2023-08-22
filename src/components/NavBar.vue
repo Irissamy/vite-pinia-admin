@@ -14,13 +14,13 @@
                         <RouterLink to="/about" class="nav-link">About</RouterLink>
                     </li>
                     <li class="nav-item">
-                        <RouterLink to="/product" class="nav-link">Product</RouterLink>
+                        <RouterLink to="/dashboardView/product" class="nav-link">Product</RouterLink>
                     </li>
                     <li class="nav-item">
-                        <RouterLink to="/coupon" class="nav-link">Coupon</RouterLink>
+                        <RouterLink to="/dashboardView/coupon" class="nav-link">Coupon</RouterLink>
                     </li>
                     <li class="nav-item">
-                        <RouterLink to="/order" class="nav-link">Order</RouterLink>
+                        <RouterLink to="/dashboardView/order" class="nav-link">Order</RouterLink>
                     </li>
                 </ul>
                 <div class="nav-item dropdown pe-3">

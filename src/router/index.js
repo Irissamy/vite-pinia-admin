@@ -23,19 +23,27 @@ const router = createRouter({
       component: () => import('../views/LoginView.vue')
     },
     {
-      path: '/product',
-      name: 'product',
-      component: () => import('../views/ProductView.vue')
-    },
-    {
-      path: '/coupon',
-      name: 'coupon',
-      component: () => import('../views/CouponView.vue')
-    },
-    {
-      path: '/order',
-      name: 'order',
-      component: () => import('../views/OrderView.vue')
+      path: '/dashboardView',
+      name: 'dashboardView',
+      component: () => import('../views/DashboardView.vue'),
+      children: [
+        
+        {
+          path: 'product',
+          name: 'product',
+          component: () => import('../views/ProductView.vue')
+        },
+        {
+          path: 'coupon',
+          name: 'coupon',
+          component: () => import('../views/CouponView.vue')
+        },
+        {
+          path: 'order',
+          name: 'order',
+          component: () => import('../views/OrderView.vue')
+        }
+      ]
     }
   ]
 })
