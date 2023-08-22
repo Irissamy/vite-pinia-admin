@@ -27,7 +27,6 @@ const router = createRouter({
       name: 'dashboardView',
       component: () => import('../views/DashboardView.vue'),
       children: [
-        
         {
           path: 'product',
           name: 'product',
