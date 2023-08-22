@@ -30,8 +30,8 @@
                 <input class="form-check-input" type="checkbox"
                     id="is_enabled"
                     v-model="couponInfo.is_enabled"
-                    :true-value="0"
-                    :false-value="1"
+                    :true-value="1"
+                    :false-value="0"
                     >
                 <label class="form-check-label" for="is_enabled">
                     是否啟用
