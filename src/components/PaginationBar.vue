@@ -4,7 +4,7 @@
             <li class="page-item" :class="{ 'disabled' : !paginationBar.has_pre }" @click.prevent="prevPage(paginationBar.current_page)">
               <a class="page-link">Previous</a>
             </li>
-            <li class="page-item" v-for="page in paginationBar.total_pages" :key="page"><a class="page-link" :class="{ 'active' : page === paginationBar.current_page }" href="#" @click.prevent="updatePage(page)">{{ page }}</a></li>
+            <li class="page-item" v-for="page in paginationBar.total_pages" :key="page"><a class="page-link" :class="{ 'active' : page === paginationBar.current_page }" href="javascript:void(0);" @click.prevent="updatePage(page)">{{ page }}</a></li>
             <li class="page-item" :class="{ 'disabled' : !paginationBar.has_next}" @click.prevent="nextPage(paginationBar.current_page)">
               <a class="page-link">Next</a>
             </li>

@@ -1,22 +1,27 @@
 <template>
-  <header>
-    <div class="wrapper">
-      <NavBar></NavBar>
+  <div class="layout-wrapper layout-content-navbar">
+    <div class="layout-container">
+      <AsideBar></AsideBar>
+      <div class="layout-page">
+        <SearchBar></SearchBar>
+        <div class="content-wrapper">
+          <div class="container-xxl flex-grow-1 content">
+            <RouterView />
+          </div>
+        </div>   
+      </div>
     </div>
-  </header>
-  <div class="container py-4">
-    <RouterView />
   </div>
-  
 </template>
 
 <script>
 import {  RouterView } from 'vue-router'
-import NavBar from '@/components/NavBar.vue'
+import AsideBar from '@/components/AsideBar.vue'
+import SearchBar from '@/components/SearchBar.vue'
 
 export default {
   components: {
-    RouterView,NavBar
+    RouterView,AsideBar,SearchBar
   }
 }
 </script>

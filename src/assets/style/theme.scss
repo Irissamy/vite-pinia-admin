@@ -1,0 +1,25 @@
+body{
+    margin: 0;
+    font-family: var(--bs-body-font-family);
+    font-size: var(--bs-body-font-size);
+    font-weight: var(--bs-body-font-weight);
+    line-height: var(--bs-body-line-height);
+    color: var(--bs-body-color);
+    text-align: var(--bs-body-text-align);
+    background-color:#f5f5f9;
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: rgba(67, 89, 113, 0);
+}
+.bg-menu-theme{
+    background-color: #fff;
+    color: #697a8d;
+}
+.menu-vertical{
+    box-shadow: 0 0.125rem 0.375rem 0 rgba(161, 172, 184, 0.12);
+}
+.text-muted{
+    color: #a1acb8;
+}
+h6, .h6, h5, .h5, h4, .h4, h3, .h3, h2, .h2, h1, .h1{
+    color:#566a7f;
+}

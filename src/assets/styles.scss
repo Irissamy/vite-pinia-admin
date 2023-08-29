@@ -6,3 +6,10 @@
 @import "bootstrap/scss/maps";
 @import "bootstrap/scss/mixins";
 @import "bootstrap/scss/root";
+
+@import "../assets/style/variables";
+@import "../assets/style/theme";
+@import "../assets/style/layout/layout";
+
+@import "../assets/style/components/sidemenu";
+@import "../assets/style/components/searchbar";

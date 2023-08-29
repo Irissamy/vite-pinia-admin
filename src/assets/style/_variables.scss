@@ -1,0 +1,67 @@
+$black: #435971;
+$gray-800: rgba($black, 0.8);
+$rgba-to-hex-bg: #fff;
+
+$navbar-height:3.875rem;
+$body-color:rgba-to-hex($gray-800, $rgba-to-hex-bg);
+
+$grid-gutter-width: 1.625rem;
+$container-padding-x: 1.625rem; 
+$container-padding-x-sm: 1rem;
+$container-padding-y: 1.625rem;
+// scss-docs-start container-max-widths
+$container-max-widths: (
+  sm: 540px,
+  md: 720px,
+  lg: 960px,
+  xl: 1140px,
+  xxl: 1440px // Custom xxl size
+);
+$menu-width: 16.25rem;
+$menu-collapsed-width: 5.25rem;
+$menu-animation-duration: 0.3s;
+$zindex-menu-fixed: 1080;
+$zindex-layout-mobile: 1100;
+
+$menu-width: 16.25rem ;
+$menu-collapsed-width: 5.25rem ;
+
+$menu-font-size: $font-size-base ;
+
+$menu-item-spacer: 0.0625rem ;
+
+$menu-vertical-link-margin-y: 0rem ;
+$menu-vertical-link-margin-x: 1rem ;
+
+$menu-vertical-header-margin-y: 1rem ;
+$menu-vertical-header-margin-x: 0 ;
+
+$menu-vertical-link-padding-y: 0.625rem ;
+$menu-vertical-link-padding-x: 1rem ;
+
+$menu-vertical-menu-link-padding-y: 0.625rem ;
+$menu-vertical-menu-level-spacer: 0.65rem ;
+
+$menu-horizontal-item-spacer: 0.325rem ;
+$menu-horizontal-link-padding-y: 0.565rem ;
+$menu-horizontal-link-padding-x: 1rem ;
+$menu-horizontal-menu-link-padding-y: 0.625rem ;
+$menu-horizontal-menu-level-spacer: 2.35rem ;
+// $menu-horizontal-menu-box-shadow: $dropdown-box-shadow ;
+
+$menu-sub-width: 14.5rem ;
+$menu-control-width: 2.25rem ;
+$menu-control-arrow-size: 0.5rem ;
+
+$menu-icon-expanded-width: 1.5rem ;
+$menu-icon-expanded-font-size: 1.25rem ;
+$menu-icon-expanded-spacer: 0.5rem ;
+
+$menu-animation-duration: 0.3s ;
+
+$menu-max-levels: 5 ;
+
+$menu-dark-border-color: rgba(255, 255, 255, 0.2) ;
+$menu-dark-menu-bg: rgba(0, 0, 0, 0.06) ;
+$menu-light-border-color: rgba(0, 0, 0, 0.06) ;
+$menu-light-menu-bg: rgba(0, 0, 0, 0.05) ;
