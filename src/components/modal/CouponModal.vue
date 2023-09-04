@@ -40,7 +40,7 @@
             </div>
             </div>
             <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
             <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click.prevent="updateCoupon(couponInfo)">更新優惠券
             </button>
             </div>
