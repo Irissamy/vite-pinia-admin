@@ -5,6 +5,7 @@ export default defineStore('orderStore',{
     state: () => ({
         orderList: [],
         pagination: {},
+        toastMessages: [],
         isLoading: false
     }),
     actions: {
@@ -15,35 +16,60 @@ export default defineStore('orderStore',{
               .then((res) => {
                 if (res.data.success) {
                   this.orderList = res.data.orders
-                  this.isLoading = false
                 } else {
-                  console.log(res.data.messages)
+                  this.toastMessages.push({
+                    style: 'danger',
+                    title: '取得列表失敗',
+                    content: res.data.message.join('、')
+                  })
                 }
-            })
+              })
+            this.isLoading = false
         },
         async deleteOrder(orderId){
             const api = `${import.meta.env.VITE_APP_API}api/${import.meta.env.VITE_APP_PATH}/admin/order/${orderId}`
+            this.isLoading = true
             await axios.delete(api)
                 .then((res) => {
                     if(res.data.success){
                         this.getOrderList()
+                        this.toastMessages.push({
+                            style: 'success',
+                            title: '刪除成功',
+                            content: ''
+                        })
                     } else {
-                        console.log(res.data.message)
+                        this.toastMessages.push({
+                            style: 'danger',
+                            title: '刪除失敗',
+                            content: res.data.message.join('、')
+                        })
                     }
                 })
+            this.isLoading = false
         },
         async changeOrder(orderId){
             const api = `${import.meta.env.VITE_APP_API}api/${import.meta.env.VITE_APP_PATH}/admin/order/${orderId}`
             const params = this.orderList.find((item) => item.id === orderId)
-            // console.log(params)
+            this.isLoading = true
             await axios.put(api,{data:params})
                 .then((res) => {
                     if(res.data.success){
                         this.getOrderList()
+                        this.toastMessages.push({
+                            style: 'success',
+                            title: '編輯成功',
+                            content: ''
+                        })
                     } else {
-                        console.log(res.data.message)
+                        this.toastMessages.push({
+                            style: 'danger',
+                            title: '編輯失敗',
+                            content: res.data.message.join('、')
+                        })
                     }
                 })
+            this.isLoading = false
         }
     }
 })

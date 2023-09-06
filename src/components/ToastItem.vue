@@ -1,9 +1,10 @@
 <template>
-  <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" ref="toast">
+  <div class="bs-toast toast toast-placement-ex m-2" :class="`bg-${msg.style}`" role="alert" aria-live="assertive" aria-atomic="true" ref="toast">
     <div class="toast-header">
-      <span class="p-2 rounded me-2 d-inline-block" :class="`bg-${msg.style}`"></span>
-      <strong class="me-auto">{{ msg.title }}</strong>
-      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+      <i class="bi bi-bell me-2"></i>
+      <!-- <span class="p-2 rounded me-2 d-inline-block" :class="`bg-${msg.style}`"></span> -->
+      <strong class="me-auto fw-semibold">{{ msg.title }}</strong>
+      <button type="button" class="btn-close" :class="`bg-${msg.style}`" data-bs-dismiss="toast" aria-label="Close"></button>
     </div>
     <div class="toast-body" v-if="msg.content">
       {{ msg.content }}

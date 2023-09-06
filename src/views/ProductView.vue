@@ -1,7 +1,7 @@
 <template>
     <LoadingOverlay :active="isLoading"></LoadingOverlay>
+    <ToastMessage :toast-msg="toastMessages"></ToastMessage>
     <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light fs-4">Pages /</span> Product 產品</h4>
-    
     <div class="card">
         <div class="card-header d-flex align-items-center">
             <h5 class="mb-0">Product 產品</h5>
@@ -56,10 +56,11 @@ import productStore from '@/store/productStore.js'
 import { mapState, mapActions } from 'pinia'
 import ProductDetail from '@/components/modal/ProductDetail.vue'
 import DeleteProduct from '@/components/modal/DeleteProduct.vue'
+import ToastMessage from '@/components/ToastMessage.vue'
 
 export default {
     components: {
-        ProductDetail,DeleteProduct
+        ProductDetail,DeleteProduct,ToastMessage
     },
     data() {
         return {
@@ -71,7 +72,7 @@ export default {
         }
     },
     computed: {
-        ...mapState(productStore,['products','isLoading'])
+        ...mapState(productStore,['products','isLoading','toastMessages'])
     },
     methods: {
         ...mapActions(productStore,['getProductList']),

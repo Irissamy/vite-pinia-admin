@@ -4,6 +4,7 @@ import { defineStore } from "pinia";
 export default defineStore('productStore',{
     state: () => ({
         products: [],
+        toastMessages: [],
         isLoading: false
     }),
     actions: {
@@ -12,18 +13,38 @@ export default defineStore('productStore',{
           this.isLoading = true
           await axios.get(api)
             .then((res) => {
-              this.products = res.data.products
-              this.isLoading = false
+              if(res.data.success){
+                this.products = res.data.products
+              } else {
+                this.toastMessages.push({
+                  style: 'danger',
+                  title: '取得列表失敗',
+                  content: res.data.message.join('、')
+                })
+              }       
             })
+          this.isLoading = false
       },
       async removeProduct(productId){
         const api = `${import.meta.env.VITE_APP_API}api/${import.meta.env.VITE_APP_PATH}/admin/product/${productId}`
         this.isLoading = true
         await axios.delete(api)
-          .then(() => {
-            this.getProductList()
-            this.isLoading = false
+          .then((res) => {
+            if (res.data.success){
+              this.getProductList()
+              this.toastMessages.push({
+                style: 'success',
+                title: '刪除成功'
+              })
+            } else {
+              this.toastMessages.push({
+                style: 'danger',
+                title: '刪除失敗',
+                content: res.data.message.join('、')
+              })
+            }
           })
+        this.isLoading = false
       },
       async addProduct(addProductList) {
         // 新增
@@ -40,8 +61,17 @@ export default defineStore('productStore',{
           .then((res) => {
             if(res.data.success){
               this.getProductList()
+              this.toastMessages.push({
+                style: 'success',
+                title: apiMethods === 'post' ? '新增成功' : '編輯成功',
+                content: ''
+              })
             } else {
-              console.log(res.data.message)
+              this.toastMessages.push({
+                style: 'danger',
+                title: '失敗',
+                content: res.data.message.join('、')
+              })
             }
           })
           this.isLoading = false

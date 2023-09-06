@@ -1,5 +1,6 @@
 <template>
   <LoadingOverlay :active="isLoading"></LoadingOverlay>
+  <ToastMessage :toast-msg="toastMessages"></ToastMessage>
   <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light fs-4">Pages /</span> Order 訂單</h4>
     <div class="card">
         <div class="card-header d-flex align-items-center">
@@ -58,12 +59,13 @@
 import { currency } from '@/methods/filterFn.js'
 import OrderModal from '@/components/modal/OrderModal.vue'
 import DeleteModal from '@/components/modal/DeleteModal.vue'
+import ToastMessage from '@/components/ToastMessage.vue'
 import orderStore from '@/store/orderStore.js'
 import { mapState, mapActions } from 'pinia'
 
 export default {
   components: {
-    OrderModal,DeleteModal
+    OrderModal,DeleteModal,ToastMessage
   },
   data () {
     return {
@@ -72,7 +74,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(orderStore,['orderList','isLoading'])
+    ...mapState(orderStore,['orderList','isLoading','toastMessages'])
   },
   methods: {
     ...mapActions(orderStore,['getOrderList','deleteOrder','changeOrder']),
